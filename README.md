@@ -28,7 +28,7 @@
 
 1. Clone the repository:
    ```bash
-   git clone [https://github.com/your-org/swarmbotics_sim_devops.git](https://github.com/your-org/swarmbotics_sim_devops.git)
+   git clone https://github.com/mtepenner/swarmbotics_sim_devops.git
    cd swarmbotics_sim_devops
    ```
 2. Install simulation dependencies (Ignition/Gazebo and ROS).
