@@ -1,0 +1,34 @@
+swarmbotics_sim_devops/
+├── simulation_environment/             # SITL / HITL Simulation (Ignition/Gazebo)
+│   ├── models/                         # Virtual representations of physical assets
+│   │   └── fireant_ugv/
+│   │       ├── model.sdf               # Physics, kinematics, and sensor definitions
+│   │       └── meshes/                 # 3D visual and collision geometry
+│   ├── worlds/                         # Tactical testing environments
+│   │   ├── urban_canyon.sdf            # Simulates GPS-denied environments (multipath errors)
+│   │   └── contested_plains.sdf        # Open terrain with simulated adversary EW jammers
+│   ├── launch_scripts/                 # Orchestration for swarm-scale testing
+│   │   ├── spawn_swarm.py              # Script to instantiate 100+ UGVs with unique namespaces
+│   │   └── hitl_bridge.launch.py       # Routes simulated sensor data into a physical edge compute board
+│   └── network_sim/                    # Simulates the chaotic realities of tactical comms
+│       └── mininet_mesh_sim.py         # Artificially injects latency, packet loss, and jamming
+│
+├── ci_cd_pipelines/                    # Continuous Integration & Automated Testing
+│   ├── .github/workflows/              # (or GitLab CI equivalents)
+│   │   ├── build_ros_edge.yml          # Compiles the Edge Layer C++ code and checks formatting
+│   │   ├── headless_sim_tests.yml      # Runs automated behavior tests in Gazebo without a GUI
+│   │   └── build_c2_containers.yml     # Builds and pushes Docker images for the C2 Backend
+│   └── behavior_test_suites/           # Automated validation of the "Hive Mind"
+│       ├── test_flanking_logic.py      # Asserts the swarm successfully surrounds a target in sim
+│       └── test_comms_failover.py      # Asserts the UGVs switch to SATCOM when the mesh drops
+│
+└── ota_update_system/                  # Over-The-Air (OTA) Updates for the global fleet
+    ├── update_server/                  # Fleet management backend (e.g., Mender.io or custom)
+    │   ├── fleet_tracker.go            # Tracks the current software/AI version of every UGV
+    │   └── campaign_scheduler.go       # Manages staged rollouts (e.g., update 10% of the swarm first)
+    ├── edge_client/                    # The daemon running directly on the Ubuntu Core UGV
+    │   ├── ota_agent.rs                # Ultra-reliable Rust client that downloads patches
+    │   └── a_b_partition_manager.sh    # Manages dual-bank OS partitions for bulletproof rollbacks
+    └── crypto_security/                # Zero-trust update verification
+        ├── key_generation.sh           # Generates asymmetric keys for the CI pipeline
+        └── verify_payload.py           # Forces the UGV to verify the update's signature before installing
